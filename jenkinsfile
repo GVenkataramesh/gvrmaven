@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+    environment {
+        PATH= "/opt/Maven/apache-maven-3.9.1/bin:$PATH"
+    }
+
+    stages {
+        stage('GVR PROJECT') {
+            steps {
+                echo 'Started GVR PROJECT'
+            }
+        }
+        stage('CLONE') {
+            steps {
+                pipeline {
+    agent any
+    environment {
+        PATH= "/opt/Maven/apache-maven-3.9.1/bin:$PATH"
+    }
+
+    stages {
+        stage('GVR PROJECT') {
+            steps {
+                echo 'Started GVR PROJECT'
+            }
+        }
+        stage('CLONE') {
+            steps {
+                git credentialsId: 'de1fb72f-a14a-48da-8e3a-6b8c3ab3427e', url: 'https://github.com/GVenkataramesh/gvrmaven.git'
+            }
+        }
+        stage('BUILD') {
+            steps {
+                sh "mvn clean install"
+            }
+        }
+        stage('DEPLOY') {
+            steps {
+                deploy adapters: [tomcat9(credentialsId: '7356f8ee-5789-4f2d-b53d-64d264795c77', path: '', url: 'http://192.168.79.131:8081/')], contextPath: 'gvr6999', war: '**/*.war'
+            }
+        }
+     }
+}
+            }
+        }
+        stage('BUILD') {
+            steps {
+                sh "mvn clean install"
+            }
+        }
+        stage('DEPLOY') {
+            steps {
+                deploy adapters: [tomcat9(credentialsId: '7356f8ee-5789-4f2d-b53d-64d264795c77', path: '', url: 'http://192.168.79.131:8081/')], contextPath: 'gvr', war: '**/*.war'
+            }
+        }
+     }
+}
